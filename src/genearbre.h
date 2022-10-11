@@ -4,11 +4,7 @@
 #define PERSNUM 10
 
 typedef struct {
-	int age;
-	char fname;
-	char lname;
-	char tel [13];
-	char genre;
+	char nom [20];
 	Personne *pere;
 	Personne *mere;
 	Personne *madelphe;
@@ -16,6 +12,10 @@ typedef struct {
 	Personne *enf;
 	Personne *suiv;
 } Personne;
+
+typedef struct {
+	Personne *tete
+} Graphe;
 
 void disp_indiv(Personne *);
 Indiv *new_indiv(void);
