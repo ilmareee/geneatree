@@ -1,4 +1,5 @@
-#include "nperslist.h"
+#include "genearbre.h"
+#include "modify.h"
 
 int
 main()
@@ -7,10 +8,11 @@ main()
 }
 
 
+/* renvoie (un pointeur sur) la personne contenant le nom cherché */
 Personne *
 trouver_personne(char *nomch, Graphe arbre)
 {
-	int i = 0;
+	int i = 0, same;
 	same = 1;
 	Personne *indiv = arbre.tete;
 
@@ -38,65 +40,50 @@ trouver_personne(char *nomch, Graphe arbre)
 }
 
 
-Personne *
-enregistrer_personne(Graphe arbre, char *nom)
-{
-	Personne *indiv = arbre.tete;
-	Personne *nouv = (Personne *) malloc(sizeof(Personne));
-	int i;
-
-	while (indiv->suiv != NULL){
-		indiv = indiv->suiv;
-	};
-	for (i = 0; *(nom + i) != '\0'; i++) nouv->nom[i] = *(nom + i);
-	nouv->nom[i] = '\0';
-	*nouv = {
-		.pere = NULL;
-		.mere = NULL;
-		.padelphe = NULL;
-		.madelphe = NULL;
-		.env = NULL;
-		.suiv = NULL;
-	};
-	indiv->suiv = nouv;
-
-	return nouv;
-}
-
-
-/* crée un pointeur de l'enfant sur son pere, et du dernier enfant de
- * son pere sur lui en tant que son adelphe paternel (depuis le pere
- * si il n'avait encore aucun enfant */
+/* affiche sur stdout les relations de chaque personne du graphe */
 void
-filiation_pere_enfant(Personne *enf, Personne *pere)
+afficher_graphe(Graphe arbre)
 {
-	Personne *frat = pere->enf;
+	Personne *parclist = arbre.tete;
 
-	enf->pere = pere;
-	if (frat == NULL){
-		pere->enf = enf;
-		return;
+	while(parclist != NULL){
+		printf("%s\n", parclist->nom);
+
+		if (parclist->suiv != NULL){
+			printf("  suivant : %s\n", parclist->suiv->nom);
+		} else {
+			printf("  suivant : (null)\n");
+		};
+
+		if (parclist->mere != NULL){
+			printf("  mere : %s\n", parclist->mere->nom);
+		} else {
+			printf("  mere : (null)\n");
+		};
+
+		if (parclist->pere != NULL){
+			printf("  pere : %s\n", parclist->pere->nom);
+		} else {
+			printf("  pere : (null)\n");
+		};
+
+		if (parclist->padelphe != NULL){
+			printf("  adelphe paternel : %s\n", parclist->padelphe->nom);
+		} else {
+			printf("  adelphe paternel : (null)\n");
+		};
+
+		if (parclist->madelphe != NULL){
+			printf("  adelphe maternel : %s\n", parclist->madelphe->nom);
+		} else {
+			printf("  adelphe maternel : (null)\n");
+		};
+
+		if (parclist->enf != NULL){
+			printf("  enfant : %s\n\n\n", parclist->enf->nom);
+		} else {
+			printf("  enfant : (null)\n\n\n");
+		};
 	};
-
-	while (frat != NULL) frat = frat->padelphe;
-	frat->padelphe = enf;
 }
 
-
-/* crée un pointeur de l'enfant sur sa mere, et du dernier enfant de
- * sa mere sur lui en tant que son adelphe maternel (depuis la mere
- * si elle n'avait encore aucun enfant */
-void
-filiation_pere_enfant(Personne *enf, Personne *mere)
-{
-	Personne *frat = mere->enf;
-
-	enf->mere = mere;
-	if (frat == NULL){
-		mere->enf = enf;
-		return;
-	};
-
-	while (frat != NULL) frat = frat->madelphe;
-	frat->madelphe = enf;
-}

@@ -1,23 +1,19 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-#define PERSNUM 10
-
-typedef struct {
-	char nom [20];
-	Personne *pere;
-	Personne *mere;
-	Personne *madelphe;
-	Personne *padelphe;
-	Personne *enf;
-	Personne *suiv;
+typedef struct Pers{
+	char nom [256];
+	struct Pers *pere;
+	struct Pers *mere;
+	struct Pers *madelphe;
+	struct Pers *padelphe;
+	struct Pers *enf;
+	struct Pers *suiv;
 } Personne;
 
 typedef struct {
-	Personne *tete
+	Personne *tete;
 } Graphe;
 
-void disp_indiv(Personne *);
-Indiv *new_indiv(void);
-int same_indiv(Personne *, Personne *);
+Personne *trouver_personne(char *,Graphe);
+void afficher_graphe(Graphe);
 
