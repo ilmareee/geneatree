@@ -79,3 +79,64 @@ print_ascend(Personne *tmproot, size_t tabc, int dir)
 	print_pers(tmproot, tabc, dir);
 	if (tmproot->pere) print_ascend(tmproot->pere, tabc+1, RIGHT);
 }
+
+/* affiche les enfants d'une personne */
+void
+print_child(Personne *parent)
+{
+	Personne *enf = parent->enf;
+	if (!enf) return;
+
+	if (enf->mere == parent){
+		while (enf->madelphe != parent->enf) {
+			printf ("%s,  ", enf->nom);
+			enf = enf->madelphe;
+		};
+		printf ("%s", enf->nom);
+	} else {
+		while (enf->padelphe != parent->enf) {
+			printf ("%s,  ", enf->nom);
+			enf = enf->padelphe;
+		};
+		printf ("%s", enf->nom);
+	};
+}
+
+
+/* affiche une génération donnée */
+void
+print_gen(Personne *parent, int genc)
+{
+	Personne *enf = parent->enf;
+	if (!enf) return;
+
+	if (genc == 1) print_child(parent);
+	else if (enf->mere == parent){
+		while (enf->madelphe != parent->enf) {
+			print_gen(enf, genc-1);
+			printf("  |  ");
+			enf = enf->madelphe;
+		};
+		print_gen(enf, genc-1);
+	} else {
+		while (enf->padelphe != parent->enf) {
+			print_gen(enf, genc-1);
+			printf("  |  ");
+			enf = enf->padelphe;
+		};
+		print_gen(enf, genc-1);
+	};
+}
+
+
+/* affiche toutes les générations jusqu'à la génération donnée */
+void
+print_all_gen(Personne * parent, int genc)
+{
+	int i;
+	for(i = 1; i <= genc; i++){
+		print_gen(parent, i);
+		printf("\n");
+	};
+}
+
