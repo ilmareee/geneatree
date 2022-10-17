@@ -3,8 +3,9 @@
 
 
 Personne *enregistrer_personne(Graphe *, char *);
-void filiation_pere_enfant(Personne *, Personne *);
-void filiation_mere_enfant(Personne *, Personne *);
-void annuler_pere_enfant(Personne *);
-void annuler_mere_enfant(Personne *);
+int filiation_pere_enfant(Personne *, Personne *);
+int filiation_mere_enfant(Personne *, Personne *);
+int annuler_pere_enfant(Personne *);
+int annuler_mere_enfant(Personne *);
+void liberer_graphe(Graphe *);
 
