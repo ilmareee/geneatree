@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#define ERRCYC 10
+
 typedef struct Pers{
 	char nom [256];
 	struct Pers *pere;
@@ -16,4 +18,5 @@ typedef struct {
 
 Personne *trouver_personne(char *,Graphe);
 void afficher_graphe(Graphe);
+int chercher_anomalie(Graphe);
 
