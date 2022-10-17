@@ -41,54 +41,6 @@ trouver_personne(char *nomch, Graphe arbre)
 }
 
 
-/* affiche sur stdout les relations de chaque personne du graphe */
-void
-afficher_graphe(Graphe arbre)
-{
-	Personne *parclist = arbre.tete;
-
-	while(parclist != NULL){
-		printf("%s\n", parclist->nom);
-
-		if (parclist->suiv != NULL){
-			printf("  suivant : %s\n", parclist->suiv->nom);
-		} else {
-			printf("  suivant : (null)\n");
-		};
-
-		if (parclist->mere != NULL){
-			printf("  mere : %s\n", parclist->mere->nom);
-		} else {
-			printf("  mere : (null)\n");
-		};
-
-		if (parclist->pere != NULL){
-			printf("  pere : %s\n", parclist->pere->nom);
-		} else {
-			printf("  pere : (null)\n");
-		};
-
-		if (parclist->padelphe != NULL){
-			printf("  adelphe paternel : %s\n", parclist->padelphe->nom);
-		} else {
-			printf("  adelphe paternel : (null)\n");
-		};
-
-		if (parclist->madelphe != NULL){
-			printf("  adelphe maternel : %s\n", parclist->madelphe->nom);
-		} else {
-			printf("  adelphe maternel : (null)\n");
-		};
-
-		if (parclist->enf != NULL){
-			printf("  enfant : %s\n\n\n", parclist->enf->nom);
-		} else {
-			printf("  enfant : (null)\n\n\n");
-		};
-	};
-}
-
-
 /* cherche une anomalie du graphe, ie si la descendance d'une personne
  * permet de boucler et revenir à elle même
  * pour qu'une telle boucle existe, il faut qu'en "remontant" la parenté
