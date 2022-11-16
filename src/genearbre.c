@@ -4,6 +4,8 @@
 #include "out.h"
 #include "sort.h"
 
+#define CONCAT(a,b) a##b
+
 int
 main()
 {
@@ -15,12 +17,12 @@ main()
 
 	while(noquit){
 		printf("Que voulez vous faire ?\n"
-				"RECREATE. recreer le graphe\n"
-				"FILIATIONS. modifier les filiations\n"
-				"VALID. vérifier la validite du graphe\n"
-				"ORDER. ordonner le graphe (ordre alphabetique\n"
-				"PRINT. afficher des elements du graphe\n"
-				"\nRentrer un nombre :");
+				"%i. recreer le graphe\n"
+				"%i. modifier les filiations\n"
+				"%i. vérifier la validite du graphe\n"
+				"%i. ordonner le graphe (ordre alphabetique\n"
+				"%i. afficher des elements du graphe\n"
+				"\nRentrer un nombre :", RECREATE, FILIATIONS, VALID, ORDER, PRINT);
 		scanf("%i", &act);
 		getchar();
 		switch (act){
@@ -61,7 +63,7 @@ void
 filiations(Graphe *arbre)
 {
 	int act, nquit = 1;
-	char *enf, *par;
+	char enf[256], par[256];
 
 	while (nquit){
 		printf("Que voulez-vous faire ?\n"
@@ -76,34 +78,34 @@ filiations(Graphe *arbre)
 		switch (act){
 			case AMERE :
 				printf("Rentrer le nom de l'enfant : ");
-				scanf("%ms", &enf);
+				scanf("%255s", enf);
 				getchar();
 				printf("Rentrer le nom du parent : ");
-				scanf("%ms", &par);
+				scanf("%255s", par);
 				getchar();
 				if (filiation_mere_enfant(trouver_personne(enf, *arbre), trouver_personne(par, *arbre))) printf("L'enfant avait deja un parent, veuillez le supprimer avant\n");
 				else printf("La filiation a bien ete enregistree\n");
 				break;
 			case APERE :
 				printf("Rentrer le nom de l'enfant : ");
-				scanf("%ms", &enf);
+				scanf("%255s", enf);
 				getchar();
 				printf("Rentrer le nom du parent : ");
-				scanf("%ms", &par);
+				scanf("%255s", par);
 				getchar();
 				if (filiation_pere_enfant(trouver_personne(enf, *arbre), trouver_personne(par, *arbre))) printf("L'enfant avait deja un parent, veuillez le supprimer avant\n");
 				else printf("La filiation a bien ete enregistree\n");
 				break;
 			case DMERE :
 				printf("Rentrer le nom de l'enfant : ");
-				scanf("%ms", &enf);
+				scanf("%255s", enf);
 				getchar();
 				if (annuler_mere_enfant(trouver_personne(enf, *arbre))) printf("L'enfant n'avait pas ce parent\n");
 				else printf("La filiation a bien ete supprimee\n");
 				break;
 			case DPERE :
 				printf("Rentrer le nom de l'enfant : ");
-				scanf("%ms", &enf);
+				scanf("%255s", enf);
 				getchar();
 				if (annuler_pere_enfant(trouver_personne(enf, *arbre))) printf("L'enfant n'avait pas ce parent\n");
 				else printf("La filiation a bien ete supprimee\n");
@@ -126,16 +128,16 @@ void
 printinterface(Graphe arbre)
 {
 	int act, nquit = 1, gennbr;
-	char *nom;
+	char nom[256];
 
 	while (nquit){
 		printf("Que voulez-vous faire ?\n"
-				"ALL. afficher tout le graphe\n"
-				"ASCEND. afficher l'ascendance d'une personne\n"
-				"GEN. afficher une generation de la descendance d'une personne\n"
-				"ALLGEN. afficher toute la descendance d'une personne\n"
-				"QUIT. quitter ce menu pour le menu principal\n"
-				"\nEntrer un chiffre : ");
+				"%i. afficher tout le graphe\n"
+				"%i. afficher l'ascendance d'une personne\n"
+				"%i. afficher une generation de la descendance d'une personne\n"
+				"%i. afficher toute la descendance d'une personne\n"
+				"%i. quitter ce menu pour le menu principal\n"
+				"\nEntrer un chiffre : ", ALL, ASCEND, GEN, ALLGEN, QUIT);
 		scanf("%i",&act);
 		getchar();
 		switch (act){
@@ -144,13 +146,13 @@ printinterface(Graphe arbre)
 				break;
 			case ASCEND :
 				printf("Rentrer le nom de la personne cherchee : ");
-				scanf("%ms", &nom);
+				scanf("%255s", nom);
 				getchar();
 				print_ascend(trouver_personne(nom, arbre), 0, ROOT);
 				break;
 			case GEN:
 				printf("Rentrer le nom de la personne cherchee : ");
-				scanf("%ms", &nom);
+				scanf("%255s", nom);
 				printf("Rentrer la generation a afficher (1-enfants, 2-petits-enfants,...)");
 				scanf("%i", &gennbr);
 				getchar();
@@ -159,7 +161,7 @@ printinterface(Graphe arbre)
 				break;
 			case ALLGEN:
 				printf("Rentrer le nom de la personne cherchee : ");
-				scanf("%ms", &nom);
+				scanf("%255s", nom);
 				printf("Rentrer la generation a afficher (1-enfants, 2-petits-enfants,...)");
 				scanf("%i", &gennbr);
 				getchar();
@@ -181,31 +183,15 @@ printinterface(Graphe arbre)
 
 /* renvoie (un pointeur sur) la personne contenant le nom cherché */
 Personne *
-trouver_personne(char *nomch, Graphe arbre)
+trouver_personne(char nomch[256], Graphe arbre)
 {
-	int i = 0, same;
-	same = 1;
 	Personne *indiv = arbre.tete;
 
 	while (indiv->suiv != NULL){
-		while (*(nomch+i) != '\0'){
-			if (*(nomch+i) != indiv->nom[i]){
-				same = 0;
-				break;
-			};
-		};
-		if (same) return indiv;
+		if (strcmp(nomch, indiv->nom) == 0) return indiv;
 		indiv = indiv->suiv;
-		i = 0;
-		same = 1;
 	};
-	while (*(nomch+i) != '\0'){
-		if (*(nomch+i) != indiv->nom[i]){
-			same = 0;
-			break;
-		};
-	};
-	if (same) return indiv;
+	if (strcmp(nomch, indiv->nom) == 0) return indiv;
 
 	return NULL;
 }
@@ -234,6 +220,13 @@ chercher_anomalie(Graphe arbre)
 		parcparent = parclist;
 		err = 1;
 		for (i = 0; i < gsize; i++){
+			/* on detecte si on a une boucle par la parente,
+			 * plus simple car on a juste deux parents au plus
+			 * comme on le fait pour tout le monde,
+			 * toutes les eventuelles boucles sont detectees
+			 *
+			 * a savoir qu'on a une boucle ssi on peut avoir
+			 * au moins gsize parents successifs*/
 			if (!parcparent->pere){
 				err = 0;
 				break;
@@ -252,6 +245,8 @@ chercher_anomalie(Graphe arbre)
 			parcparent = parcparent->mere;
 		};
 		if (err) return ERRCYC;
+
+		parclist = parclist->suiv;
 	};
 
 	return 0;

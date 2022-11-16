@@ -8,7 +8,7 @@ DEPDIR = dep
 DEPS := $(SRCS:$(SRCDIR)/%.c=$(DEPDIR)/%.d)
 
 EXDIR = bin
-EXE  := $(EXDIR)/nperslist
+EXE  := $(EXDIR)/genearbre
 
 CFLAGS = -g -O2 -Wall -Wextra -Wconversion -Wsign-conversion -pthread
 LDFLAGS = -pthread

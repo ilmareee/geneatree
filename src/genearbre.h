@@ -30,7 +30,7 @@ typedef struct {
 	Personne *tete;
 } Graphe;
 
-Personne *trouver_personne(char *,Graphe);
+Personne *trouver_personne(char [256],Graphe);
 void filiations(Graphe *);
 void printinterface(Graphe);
 int chercher_anomalie(Graphe);

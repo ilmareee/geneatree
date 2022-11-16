@@ -46,6 +46,8 @@ afficher_graphe(Graphe arbre)
 		} else {
 			printf("  enfant : (null)\n\n\n");
 		};
+
+		parclist = parclist->suiv;
 	};
 }
 

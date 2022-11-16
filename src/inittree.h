@@ -3,5 +3,5 @@
 
 
 void init(Graphe *);
-Personne *recplacement(Graphe *, char *);
+Personne *recplacement(Graphe *, char [256]);
 

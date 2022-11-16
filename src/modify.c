@@ -3,15 +3,15 @@
 
 
 Personne *
-enregistrer_personne(Graphe *arbre, char *nom)
+enregistrer_personne(Graphe *arbre, char nom[256])
 {
 	Personne *parclist = arbre->tete;
 	Personne *nouv = (Personne *) calloc(1, sizeof(Personne));
 	int i;
 
-	for (i = 0; *(nom + i) != '\0' && i < 255; i++) nouv->nom[i] = *(nom + i);
-	nouv->nom[i] = '\0';
-	free(nom);
+	//for (i = 0; *(nom + i) != '\0' && i < 255; i++) nouv->nom[i] = nom[i];
+	memcpy(nouv->nom, nom, 256);
+	//nouv->nom[i] = '\0';
 
 	if (parclist == NULL){
 		arbre->tete = nouv;
@@ -22,6 +22,9 @@ enregistrer_personne(Graphe *arbre, char *nom)
 		parclist = parclist->suiv;
 	};
 	parclist->suiv = nouv;
+
+	nouv->padelphe = nouv;
+	nouv->madelphe = nouv;
 
 	return nouv;
 }
@@ -43,7 +46,9 @@ filiation_pere_enfant(Personne *enf, Personne *pere)
 		return 0;
 	};
 
-	while (frat != NULL) frat = frat->padelphe;
+	enf->padelphe = pere->enf;
+
+	while (frat->padelphe != NULL) frat = frat->padelphe;
 	frat->padelphe = enf;
 
 	return 0;
@@ -66,7 +71,9 @@ filiation_mere_enfant(Personne *enf, Personne *mere)
 		return 0;
 	};
 
-	while (frat != NULL) frat = frat->madelphe;
+	enf->madelphe = mere->enf;
+
+	while (frat->madelphe != NULL) frat = frat->madelphe;
 	frat->madelphe = enf;
 
 	return 0;
