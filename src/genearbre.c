@@ -129,6 +129,14 @@ printinterface(Graphe arbre)
 {
 	int act, nquit = 1, gennbr;
 	char nom[256];
+	int errno = chercher_anomalie(arbre);
+	if (errno == ERRCYC){
+		printf("Graphe invalide, l'affichage n'est pas possible car il contient un cycle\n"
+				"pour l'instant le graphe est le suivant : \n\n");
+		sleep(2);
+		afficher_graphe(arbre);
+		return;
+	};
 
 	while (nquit){
 		printf("Que voulez-vous faire ?\n"

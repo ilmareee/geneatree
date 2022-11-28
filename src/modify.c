@@ -7,7 +7,6 @@ enregistrer_personne(Graphe *arbre, char nom[256])
 {
 	Personne *parclist = arbre->tete;
 	Personne *nouv = (Personne *) calloc(1, sizeof(Personne));
-	int i;
 
 	//for (i = 0; *(nom + i) != '\0' && i < 255; i++) nouv->nom[i] = nom[i];
 	memcpy(nouv->nom, nom, 256);

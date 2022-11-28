@@ -34,11 +34,7 @@ $(DEPDIR)/%.d: $(SRCDIR)/%.c
 	@set -e; mkdir -p $(DEPDIR); \
 		rm -f $@; \
 		echo $<; \
-		$(CC) -MM -MP $(CFLAGS) $< > $@.$$$$; \
-		sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-		sed -i '1s/^/$(OBJDIR)\//' $@; \
-		rm -f $@.$$$$
-
+		$(CC) -MM -MP $(CFLAGS) $< > $@;
 
 
 $(EXDIR):
